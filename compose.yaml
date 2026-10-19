@@ -1,0 +1,49 @@
+services:
+  backend:
+    build: ./backend
+#   ports:
+#    - "8000:8000"
+    networks:
+      - frontnet
+      - backnet
+    secrets:
+      - db-password
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mariadb:10-focal
+    networks:
+      - backnet
+    environment:
+      - MYSQL_DATABASE=example
+      - MARIADB_ROOT_PASSWORD_FILE=/run/secrets/db-password
+    volumes:
+      - db-data:/var/lib/mysql
+    secrets:
+      - db-password
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -u root -p&&(cat /run/secrets/db-password) || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  proxy:
+    build: ./proxy
+    ports:
+      - "80:80"
+    networks:
+      - frontnet
+
+secrets:
+  db-password:
+    file: ./db/password.txt
+    
+networks:
+  frontnet:
+  backnet:
+
+volumes:
+  db-data:

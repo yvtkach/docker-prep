@@ -1,0 +1,23 @@
+# Система контроля версий
+.git
+.gitignore
+
+# Кэш Python и виртуальные окружения
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# IDE и настройки редакторов
+.idea/
+.vscode/
+*.swp
+
+# Локальные секреты, логи и лишние материалы лаб
+*.log
+.env
+db/
+answers/
