@@ -1,41 +1,42 @@
-## Compose sample application
+### Compose sample application
 ### Python/Flask with Nginx proxy and MySQL database
 
 Project structure:
 ```
 .
 ├── compose.yaml
-├── flask
+├── backend
 │   ├── Dockerfile
 │   ├── requirements.txt
-│   └── server.py
-└── nginx
-    └── nginx.conf
+│   └── hello.py
+├── db
+│   └─ password.txt
+└── proxy
+     ├─── conf
+     └─── Dockerfile
 
 ```
+## What it is
+A multi-container web application consisting of an Nginx reverse proxy, a Python Flask backend, and a MariaDB database that serves a list of blog posts.
 
-[_compose.yaml_](compose.yaml)
-```
-services:
-  backend:
-    build:
-      context: backend
-      target: builder
-    ...
-  db:
-    # We use a mariadb image which supports both amd64 & arm64 architecture
-    image: mariadb:10-focal
-    # If you really want to use MySQL, uncomment the following line
-    #image: mysql:8
-    ...
-  proxy:
-    build: proxy
-    ...
-```
-The compose file defines an application with three services `proxy`, `backend` and `db`.
-When deploying the application, docker compose maps port 80 of the proxy service container to port 80 of the host as specified in the file.
-Make sure port 80 on the host is not already being in use.
+## Requirements
+- Git
+- Docker and Docker Compose
+- OpenSSL (for password generation)
+- curl (for testing)
 
+## Run it
+   Clone the repository and enter the directory:
+   ```bash
+   git clone [https://github.com/yvtkach/docker-prep.git](https://github.com/yvtkach/docker-prep.git)
+   cd docker-prep
+
+## Create the database password file (do not use echo to avoid trailing newlines):
+
+```bash
+printf '%s' "$(openssl rand -hex 16)" > db/password.txt
+
+```
 > ℹ️ **_INFO_**  
 > For compatibility purpose between `AMD64` and `ARM64` architecture, we use a MariaDB as database instead of MySQL.  
 > You still can use the MySQL image by uncommenting the following line in the Compose file   
@@ -76,4 +77,4 @@ $ curl localhost:80
 Stop and remove the containers
 ```
 $ docker compose down
-```
+
