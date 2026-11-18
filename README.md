@@ -6,11 +6,11 @@ Project structure:
 .
 ├── compose.yaml
 ├── backend
-│   ├── db
-│   │   └─ password.txt
 │   ├── Dockerfile
 │   ├── requirements.txt
 │   └── hello.py
+├── db
+│   └─ password.txt
 └── proxy
      ├─── conf
      └─── Dockerfile
