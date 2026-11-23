@@ -9,10 +9,13 @@ permissions:
   contents: read
 
 jobs:
-  hello:
+  lint:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
-      - run: python3 --version
-      - run: docker compose version
-
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+      - run: pip install ruff==0.17.1
+      - run: ruff check backend
+      - run: ruff format --check backend
