@@ -41,6 +41,11 @@ server = Flask(__name__)
 conn = None
 
 
+@server.route("/health")
+def health():
+    return {"status": "ok"}
+
+
 @server.route("/")
 def listBlog():
     global conn
